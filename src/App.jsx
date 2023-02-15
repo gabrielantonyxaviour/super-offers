@@ -15,7 +15,7 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <Router>
-      <Navbar />
+      <Navbar className="select-custom" />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/create" component={CreateOffer} />

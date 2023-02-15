@@ -8,6 +8,6 @@ import {
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 function Connect() {
-  return <ConnectButton accountStatus="full" />;
+  return <ConnectButton accountStatus="full" className="select-none" />;
 }
 export default Connect;

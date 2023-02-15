@@ -17,7 +17,7 @@ export default function Navbar() {
           className="select-none"
           to={to}
           onClick={() => {
-            setNav(!nav);
+            // setNav(!nav);
           }}
         >
           {label}
@@ -28,8 +28,8 @@ export default function Navbar() {
   return (
     <div className="p-4 my-4 py-6 flex justify-between items-center max-w-[1400px] bg-gradient-to-r from-black to-[#181818] mx-auto rounded-lg">
       <div className="flex ">
-        <img src={ETHLogo} width={35} height={35}></img>
-        <h1 class=" pl-3 text-lg  md:text-2xl font-bold text-[#4CBB17] select-none hover:text-white cursor-default ease-in-out duration-500">
+        <img src={ETHLogo} width={35} height={35} className="select-none"></img>
+        <h1 className=" pl-3 text-lg  md:text-2xl font-bold text-[#4CBB17] select-none hover:text-white cursor-default ease-in-out duration-500">
           <Link
             className="select-none   text-sm sm:text-base lg:text-xl "
             to="/"
@@ -39,13 +39,13 @@ export default function Navbar() {
         </h1>
       </div>
 
-      <ul class="hidden lg:flex select-none ">
+      <ul className="hidden lg:flex select-none ">
         <NavElement to="/" label="Home" />
-        <NavElement to="/offer" label="Dashboard" />
-        <NavElement to="/" label="Your offers" />
+        <NavElement to="/offers" label="Your offers" />
+        <NavElement to="/dashboard" label="Notifications" />
       </ul>
       <ConnectButton />
-      <div class="block lg:hidden">
+      <div className="block lg:hidden">
         {nav ? (
           <AiOutlineClose size={20} onClick={handleNav} />
         ) : (
@@ -53,13 +53,13 @@ export default function Navbar() {
         )}
       </div>
       <div
-        class={
+        className={
           nav
             ? "fixed left-0 top-0 w-[60%] h-full border-r border-r-gray-900 bg-[#000300] ease-in-out duration-500"
             : "fixed left-[-100%] top-0 w-[60%] h-full ease-in-out duration-500"
         }
       >
-        <h1 class="w-full text-2xl font-bold text-[#D22B2B] m-4 hover:text-white cursor-default ease-in-out duration-500">
+        <h1 className="w-full text-2xl font-bold text-[#D22B2B] m-4 hover:text-white cursor-default ease-in-out duration-500">
           <Link
             className="select-none   text-sm sm:text-base lg:text-xl "
             to="/"
@@ -68,7 +68,7 @@ export default function Navbar() {
           </Link>
         </h1>
 
-        <ul class="p-5 uppercase text-xs sm:text-base">
+        <ul className="p-5 uppercase text-xs sm:text-base">
           <NavElement to="/" label="Home" />
           <NavElement to="/offer" label="Dashboard" />
           <NavElement to="/" label="Your offers" />
