@@ -4,7 +4,7 @@ type Claim @entity {
   claimedAt: BigInt!
 }
 
-type Offers @entity {
+type Offer @entity {
   id: ID!
   title: String!
   description: String!

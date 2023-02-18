@@ -8,13 +8,13 @@ import {
   SuperOfferStopped,
   SuperOfferUpdated,
 } from "../generated/SuperOffers/SuperOffers";
-import { Claim, Offers } from "../generated/schema";
+import { Claim, Offer } from "../generated/schema";
 
 export function handleSuperOfferCreated(event: SuperOfferCreated): void {
-  let offer = Offers.load(event.params.offerId.toHexString());
+  let offer = Offer.load(event.params.offerId.toHexString());
 
   if (!offer) {
-    offer = new Offers(event.params.offerId.toHexString());
+    offer = new Offer(event.params.offerId.toHexString());
   }
 
   offer.title = event.params._name;
@@ -42,10 +42,10 @@ export function handleSuperOfferCreated(event: SuperOfferCreated): void {
 }
 
 export function handleSuperOfferUpdated(event: SuperOfferUpdated): void {
-  let offer = Offers.load(event.params.offerId.toHexString());
+  let offer = Offer.load(event.params.offerId.toHexString());
 
   if (!offer) {
-    offer = new Offers(event.params.offerId.toHexString());
+    offer = new Offer(event.params.offerId.toHexString());
   }
 
   offer.title = event.params._name;
@@ -74,19 +74,19 @@ export function handleSuperOfferUpdated(event: SuperOfferUpdated): void {
 }
 
 export function handleSuperOfferDeleted(event: SuperOfferDeleted): void {
-  let offer = Offers.load(event.params.offerId.toHexString());
+  let offer = Offer.load(event.params.offerId.toHexString());
 
   if (!offer) {
-    offer = new Offers(event.params.offerId.toHexString());
+    offer = new Offer(event.params.offerId.toHexString());
   }
-  store.remove("Offers", event.params.offerId.toHexString());
+  store.remove("Offer", event.params.offerId.toHexString());
 }
 
 export function handleSuperOfferClaimed(event: SuperOfferClaimed): void {
-  let offer = Offers.load(event.params.offerId.toHexString());
+  let offer = Offer.load(event.params.offerId.toHexString());
 
   if (!offer) {
-    offer = new Offers(event.params.offerId.toHexString());
+    offer = new Offer(event.params.offerId.toHexString());
   }
   const offerId = event.params.offerId.toHexString();
   const claimer = event.params.claimer.toHexString();
@@ -110,10 +110,10 @@ export function handleSuperOfferClaimed(event: SuperOfferClaimed): void {
 }
 
 export function handleSuperClaimStopped(event: SuperClaimStopped): void {
-  let offer = Offers.load(event.params.offerId.toHexString());
+  let offer = Offer.load(event.params.offerId.toHexString());
 
   if (!offer) {
-    offer = new Offers(event.params.offerId.toHexString());
+    offer = new Offer(event.params.offerId.toHexString());
   }
   const offerId = event.params.offerId.toHexString();
   const receiver = event.params.receiver.toHexString();
@@ -132,10 +132,10 @@ export function handleSuperClaimStopped(event: SuperClaimStopped): void {
 }
 
 export function handleSuperOfferStopped(event: SuperOfferStopped): void {
-  let offer = Offers.load(event.params.offerId.toHexString());
+  let offer = Offer.load(event.params.offerId.toHexString());
 
   if (!offer) {
-    offer = new Offers(event.params.offerId.toHexString());
+    offer = new Offer(event.params.offerId.toHexString());
   }
   offer.updatedBalance = BigInt.fromI32(0);
   offer.flowRate = BigInt.fromI32(0);

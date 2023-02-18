@@ -61,7 +61,7 @@ export class Claim extends Entity {
   }
 }
 
-export class Offers extends Entity {
+export class Offer extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -69,18 +69,18 @@ export class Offers extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Offers entity without an ID");
+    assert(id != null, "Cannot save Offer entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type Offers must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type Offer must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("Offers", id.toString(), this);
+      store.set("Offer", id.toString(), this);
     }
   }
 
-  static load(id: string): Offers | null {
-    return changetype<Offers | null>(store.get("Offers", id));
+  static load(id: string): Offer | null {
+    return changetype<Offer | null>(store.get("Offer", id));
   }
 
   get id(): string {

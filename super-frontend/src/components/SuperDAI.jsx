@@ -49,7 +49,9 @@ export default function SuperDAI() {
               : daiBalanceIsLoading
               ? "..."
               : daiBalanceIsSuccess
-              ? ethers.utils.formatEther(daiBalance.toString())
+              ? parseFloat(
+                  ethers.utils.formatEther(daiBalance.toString())
+                ).toFixed(2)
               : 0.0}
           </p>
           <p className="text-[#71797E] text-2xl font-bold h-[20px] my-auto ml-3">
