@@ -17,7 +17,7 @@ export default function Footer() {
     );
   }
   return (
-    <div className="select-custom h-[35px] flex  justify-between max-w-[900px] mx-auto mt-[50px]">
+    <div className="select-custom h-[35px] flex  justify-between max-w-[900px] mx-auto mt-[50px] my-6">
       <div className="flex">
         <p className="h-[25px] font-semibold  text-[#A9A9A9] align-middle text-md text-center mr-7 my-auto">
           Amazing Sponsors 💚

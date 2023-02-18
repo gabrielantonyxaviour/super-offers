@@ -57,6 +57,7 @@ root.render(
           fontStack: "rounded",
           overlayBlur: "small",
         })}
+        showRecentTransactions={true}
       >
         <App />
       </RainbowKitProvider>
