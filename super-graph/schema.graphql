@@ -1,0 +1,25 @@
+type Claim @entity {
+  id: ID!
+  claimer: Bytes!
+  claimedAt: BigInt!
+}
+
+type Offers @entity {
+  id: ID!
+  title: String!
+  description: String!
+  creator: Bytes!
+  contracts: [Bytes!]!
+  resolvers: [Bytes!]!
+  expected: [Bytes!]!
+  claims: [Claim!]!
+  flowRate: BigInt!
+  claimersCount: BigInt!
+  lastClaimTime: BigInt!
+  start: BigInt!
+  end: BigInt!
+  initialBalance: BigInt!
+  updatedBalance: BigInt!
+  lastUpdated: BigInt!
+  isActive: Boolean!
+}
