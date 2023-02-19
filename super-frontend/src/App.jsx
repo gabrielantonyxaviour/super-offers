@@ -19,7 +19,7 @@ function App() {
         <Route exact path="/youroffers" component={YourOffers} />
         <Route exact path="/offers/:id" component={Offer} />
         <Route exact path="/notifications" component={Notifications} />
-        <Route path="*" element={Error404} />
+        <Route path="*" component={Error404} />
       </Switch>
       <Footer />
     </Router>

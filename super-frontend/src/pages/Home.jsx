@@ -2,6 +2,7 @@ import React from "react";
 import HomeHero from "../components/HomeHero";
 import SuperDAI from "../components/SuperDAI";
 import LatestOffers from "../components/LatestOffers";
+
 export default function Home() {
   return (
     <div className="text-white max-w-[1400px] mx-auto select-custom min-h-screen">
@@ -13,7 +14,6 @@ export default function Home() {
         </div>
         <div className="w-[24%]">
           <SuperDAI />
-          {/* <InAndOutFlow /> */}
         </div>
       </div>
     </div>
