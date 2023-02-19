@@ -95,14 +95,7 @@ export default function Notifications() {
           </h1>
         ) : (
           notifications.map((val, index) => {
-            return (
-              <NotificationCard
-                key={index}
-                {...val}
-                description="Hold 5 Link Tokens to get 10 fDAIx streamed over a span of 10 days :)"
-                offerId={3}
-              />
-            );
+            return <NotificationCard key={index} {...val} />;
           })
         )
       ) : (

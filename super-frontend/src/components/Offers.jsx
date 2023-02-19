@@ -1,54 +1,28 @@
 import React from "react";
 import OfferCard from "./OfferCard";
-const data = [
-  {
-    title: "HODL Link Tokens",
-  },
-];
+import { useQuery } from "@apollo/client";
+import { useAccount } from "wagmi";
+import { getAllOffersOfUser } from "../utils/subgraphQueries";
+
 export default function Offers() {
+  const { address } = useAccount();
+  const {
+    loading,
+    error,
+    data: offers,
+  } = useQuery(getAllOffersOfUser(address));
   return (
     <div className="">
       <p className="mx-6 mt-10 mb-6 text-[#A9A9A9] font-bold text-3xl">
         Your Offers
       </p>
-      <p className="my-12 text-white font-semibold text-xl text-center">
-        No Current Offers 🙂
-      </p>
-      {/* <OfferCard
-        title="HODL Link"
-        description="Hold Link to receive constant Passive Income"
-        claimersCount={0}
-        balance={100}
-        lastUpdated="1676797269"
-      />
-      <OfferCard
-        title="HODL Link"
-        description="Hold Link to receive constant Passive Income"
-        claimersCount={0}
-        balance={100}
-        lastUpdated="1676794304"
-      />
-      <OfferCard
-        title="HODL Link"
-        description="Hold Link to receive constant Passive Income"
-        claimersCount={0}
-        balance={100}
-        lastUpdated="1676794304"
-      />
-      <OfferCard
-        title="HODL Link"
-        description="Hold Link to receive constant Passive Income"
-        claimersCount={0}
-        balance={100}
-        lastUpdated="1676794304"
-      />
-      <OfferCard
-        title="HODL Link"
-        description="Hold Link to receive constant Passive Income"
-        claimersCount={0}
-        balance={100}
-        lastUpdated="1676794304"
-      /> */}
+      {loading ? (
+        <h1 className="text-3xl text-white font-semibold">Loading...</h1>
+      ) : error ? (
+        <h1 className="text-3xl text-white font-semibold">Error!</h1>
+      ) : (
+        offers.offers.map((val) => <OfferCard {...val} />)
+      )}
     </div>
   );
 }

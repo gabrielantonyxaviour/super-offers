@@ -9,7 +9,7 @@ export default function OfferCard({
   lastUpdated,
   isz,
 }) {
-  function calculateDifference() {
+  function calculateDifference(lastUpdated) {
     if (isz) return "1 mins ago";
     var today = new Date();
     var diffMs = today - lastUpdated * 1000;
@@ -46,7 +46,7 @@ export default function OfferCard({
           </div>
         </div>
         <p className="mt-3 mb-1 mr-4 font-semibold text-xs text-right">
-          Updated {calculateDifference()}
+          Updated {calculateDifference(lastUpdated)}
         </p>
       </div>
     </Link>

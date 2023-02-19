@@ -4,33 +4,25 @@ import {
   GOERLI_SUPER_OFFERS_ADDRESS,
 } from "../utils/constants";
 import {
-  useContractRead,
   useAccount,
   useContractWrite,
   usePrepareContractWrite,
   useSigner,
 } from "wagmi";
+import { getOfferInfo } from "../utils/subgraphQueries";
+import { useQuery } from "@apollo/client";
 import { useEffect } from "react";
 
 export default function Offer() {
   let { id } = useParams();
 
-  let data = {
-    offerId: "3",
-    title: "HODL 5 Link Tokens",
-    description: "Hold Link to receive constant Passive Income",
-    claimersCount: 0,
-    balance: 10,
-    lastUpdated: "1676797269",
-  };
+  const { loading, error, data: offerInfo } = useQuery(getOfferInfo(id));
 
-  const { address } = useAccount();
   const { data: signer } = useSigner();
 
-  function calculateDifference() {
-    return "1 mins ago";
+  function calculateDifference(lastUpdated) {
     var today = new Date();
-    var diffMs = today - data.lastUpdated * 1000;
+    var diffMs = today - lastUpdated * 1000;
     var diffDays = Math.floor(diffMs / 86400000); // days
     var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
@@ -44,49 +36,50 @@ export default function Offer() {
     address: GOERLI_SUPER_OFFERS_ADDRESS,
     abi: GOERLI_SUPER_OFFERS_ABI,
     functionName: "claimOffer",
-    args: ["3"],
+    args: [offerInfo.offers[0].offerId],
     onSuccess(data) {
       console.log(data);
     },
   });
   const { write: claimOffer, isSuccess: claimOfferSuccess } =
     useContractWrite(claimOfferConfig);
-  useEffect(() => {
-    if (claimOfferSuccess == true) {
-      data.claimersCount = 1;
-    }
-  }, [claimOfferSuccess]);
+
   return (
     <div className="max-w-[1400px]  mx-auto select-custom mt-20 h-screen">
       <h1 className="text-3xl text-white font-semibold text-center">
-        {data.title}
+        {offerInfo.offers[0].title}
       </h1>
       <div className="py-5 px-3 my-10 border-2 border-[#616161b0] mb-3 bg-gradient-to-br from-black to-[#181818] rounded-2xl">
         <h2 className="font-semibold text-xl text-white text-center">
           OfferId&nbsp;➡️ &nbsp;
-          <span className="text-green-400">{data.offerId}</span>
+          <span className="text-green-400">{offerInfo.offers[0].offerId}</span>
         </h2>
       </div>
       <p className="mt-3 mb-1 mr-4 font-semibold text-sm text-[#a9a9a9] text-center">
-        Updated {calculateDifference()}
+        Updated {calculateDifference(offerInfo.offers[0].lastUpdated)}
       </p>
       <h1 className="text-2xl ml-5 mt-9 text-[#a9a9a9] font-semibold  text-center">
         TODO
       </h1>
       <h1 className="text-lg ml-5 mt-3 mb-10 text-[#71797E] font-bold text-center ">
-        {data.description}
+        {offerInfo.offers[0].description}
       </h1>
       <div className="py-5 px-3 w-[25%] mx-auto border-2 border-[#616161b0] mb-3 bg-gradient-to-br from-black to-[#181818] rounded-2xl">
         <h2 className="font-semibold text-xl text-white text-center">
           Claimers&nbsp;&nbsp;👀 &nbsp;
-          <span className="text-green-400">{data.claimersCount}</span>
+          <span className="text-green-400">
+            {offerInfo.offers[0].claimersCount}
+          </span>
           &nbsp;/&nbsp;5
         </h2>
       </div>
       <div className="py-5 px-3 w-[25%] mx-auto  border-2 border-[#616161b0] mt-3 bg-gradient-to-br from-black to-[#181818] rounded-2xl">
         <h2 className="font-semibold text-xl text-white text-center">
           Reward&nbsp;🪙
-          <span className="text-green-400">{data.balance}</span> DAIx
+          <span className="text-green-400">
+            {offerInfo.offers[0].balance}
+          </span>{" "}
+          DAIx
         </h2>
       </div>
       <div className="flex justify-center">
