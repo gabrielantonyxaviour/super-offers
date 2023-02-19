@@ -5,6 +5,7 @@ import {
   useAccount,
   useContractWrite,
   usePrepareContractWrite,
+  useSigner,
 } from "wagmi";
 import {
   GOERLI_SUPER_OFFERS_ADDRESS,
@@ -12,9 +13,11 @@ import {
   GOERLI_SUPER_DAI_ADDRESS,
   GOERLI_SUPER_DAI_ABI,
 } from "../utils/constants";
+import * as PushAPI from "@pushprotocol/restapi";
 
 export default function CreateOffer() {
   const { address } = useAccount();
+  const { data: signer } = useSigner();
 
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
@@ -65,8 +68,20 @@ export default function CreateOffer() {
   const { write: callCreateOffer, isSuccess: createOfferIsSuccess } =
     useContractWrite(createOfferConfig);
 
+  const fetchNotifs = async () => {
+    const notifications = await PushAPI.user.getFeeds({
+      user: "eip155:5:" + address, // user address in CAIP
+      env: "staging",
+      spam: true,
+    });
+
+    console.log("Notifications: \n\n", notifications);
+  };
+  
+
   return (
     <div className="max-w-[1400px]  mx-auto select-custom mt-10">
+      
       <h1 className="text-3xl text-white font-semibold text-center">
         Create Super Offer
       </h1>
@@ -359,6 +374,7 @@ export default function CreateOffer() {
           >
             Approve DAIx
           </button>
+
           <button
             onClick={(e) => {
               e.preventDefault();

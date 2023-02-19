@@ -1,6 +1,5 @@
 import { BigInt, Bytes, store } from "@graphprotocol/graph-ts";
 import {
-  SuperOffers,
   SuperClaimStopped,
   SuperOfferClaimed,
   SuperOfferCreated,
@@ -32,12 +31,11 @@ export function handleSuperOfferCreated(event: SuperOfferCreated): void {
 
   offer.start = event.params.startTime;
   offer.end = event.params.endTime;
-  offer.initialBalance = event.params.amount;
-  offer.updatedBalance = event.params.amount;
+  offer.balance = event.params.amount;
 
   offer.lastUpdated = event.params.lastUpdated;
   offer.isActive = true;
-
+  offer.claimersCount = BigInt.fromI32(0);
   offer.save();
 }
 
@@ -64,8 +62,7 @@ export function handleSuperOfferUpdated(event: SuperOfferUpdated): void {
 
   offer.start = event.params.startTime;
   offer.end = event.params.endTime;
-  offer.initialBalance = event.params.amount;
-  offer.updatedBalance = event.params.amount;
+  offer.balance = event.params.amount;
 
   offer.lastUpdated = event.params.lastUpdated;
   offer.isActive = true;
@@ -103,8 +100,7 @@ export function handleSuperOfferClaimed(event: SuperOfferClaimed): void {
     event.params.offerId.toHexString() + event.params.claimer.toHexString()
   );
   offer.claimersCount = BigInt.fromI32(offer.claimersCount.toI32() + 1);
-  offer.lastClaimTime = event.params.updatedTime;
-  offer.updatedBalance = event.params.updatedAmount;
+  offer.balance = event.params.updatedAmount;
   offer.flowRate = event.params.updatedFlowRate;
   offer.save();
 }
@@ -126,7 +122,7 @@ export function handleSuperClaimStopped(event: SuperClaimStopped): void {
   offer.claims = arr;
   offer.claimersCount = BigInt.fromI32(offer.claimersCount.toI32() - 1);
   offer.flowRate = event.params.updatedFlowRate;
-  offer.updatedBalance = event.params.updatedAmount;
+  offer.balance = event.params.updatedAmount;
   offer.lastUpdated = event.params.updatedTime;
   offer.save();
 }
@@ -137,7 +133,7 @@ export function handleSuperOfferStopped(event: SuperOfferStopped): void {
   if (!offer) {
     offer = new Offer(event.params.offerId.toHexString());
   }
-  offer.updatedBalance = BigInt.fromI32(0);
+  offer.balance = BigInt.fromI32(0);
   offer.flowRate = BigInt.fromI32(0);
   offer.isActive = false;
 }

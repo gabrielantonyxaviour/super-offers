@@ -1,3 +1,6 @@
+import { useParams } from "react-router-dom";
+
 export default function Offer() {
-  return <div>Offer</div>;
+  let { id } = useParams();
+  return <div>Offer ID: {id}</div>;
 }

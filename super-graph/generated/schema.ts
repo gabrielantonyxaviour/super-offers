@@ -173,15 +173,6 @@ export class Offer extends Entity {
     this.set("claimersCount", Value.fromBigInt(value));
   }
 
-  get lastClaimTime(): BigInt {
-    let value = this.get("lastClaimTime");
-    return value!.toBigInt();
-  }
-
-  set lastClaimTime(value: BigInt) {
-    this.set("lastClaimTime", Value.fromBigInt(value));
-  }
-
   get start(): BigInt {
     let value = this.get("start");
     return value!.toBigInt();
@@ -200,22 +191,13 @@ export class Offer extends Entity {
     this.set("end", Value.fromBigInt(value));
   }
 
-  get initialBalance(): BigInt {
-    let value = this.get("initialBalance");
+  get balance(): BigInt {
+    let value = this.get("balance");
     return value!.toBigInt();
   }
 
-  set initialBalance(value: BigInt) {
-    this.set("initialBalance", Value.fromBigInt(value));
-  }
-
-  get updatedBalance(): BigInt {
-    let value = this.get("updatedBalance");
-    return value!.toBigInt();
-  }
-
-  set updatedBalance(value: BigInt) {
-    this.set("updatedBalance", Value.fromBigInt(value));
+  set balance(value: BigInt) {
+    this.set("balance", Value.fromBigInt(value));
   }
 
   get lastUpdated(): BigInt {

@@ -1,13 +1,13 @@
 {
-  "name": "superoffersv1",
+  "name": "superoffersv4",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ gabrielantonyxaviour/superoffersv1",
-    "create-local": "graph create --node http://localhost:8020/ gabrielantonyxaviour/superoffersv1",
-    "remove-local": "graph remove --node http://localhost:8020/ gabrielantonyxaviour/superoffersv1",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 gabrielantonyxaviour/superoffersv1",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ gabrielantonyxaviour/superoffersv4",
+    "create-local": "graph create --node http://localhost:8020/ gabrielantonyxaviour/superoffersv4",
+    "remove-local": "graph remove --node http://localhost:8020/ gabrielantonyxaviour/superoffersv4",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 gabrielantonyxaviour/superoffersv4",
     "test": "graph test"
   },
   "dependencies": {

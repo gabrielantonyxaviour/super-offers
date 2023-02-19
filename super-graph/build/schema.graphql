@@ -15,11 +15,9 @@ type Offer @entity {
   claims: [Claim!]!
   flowRate: BigInt!
   claimersCount: BigInt!
-  lastClaimTime: BigInt!
   start: BigInt!
   end: BigInt!
-  initialBalance: BigInt!
-  updatedBalance: BigInt!
+  balance: BigInt!
   lastUpdated: BigInt!
   isActive: Boolean!
 }

@@ -23,6 +23,7 @@ import {
   RainbowKitProvider,
   darkTheme,
 } from "@rainbow-me/rainbowkit";
+import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [goerli, mainnet],
@@ -37,30 +38,37 @@ const { connectors } = getDefaultWallets({
   chains,
 });
 
-const client = createClient({
+const wagmiClient = createClient({
   autoConnect: true,
   connectors,
   provider,
   webSocketProvider,
 });
+const theGraphClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  uri: process.env.PUBLIC_SUBGRAPH_URL,
+});
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <WagmiConfig client={client}>
-      <RainbowKitProvider
-        coolMode
-        chains={chains}
-        theme={darkTheme({
-          accentColor: "#4CBB17",
-          accentColorForeground: "white",
-          borderRadius: "medium",
-          fontStack: "rounded",
-          overlayBlur: "small",
-        })}
-        showRecentTransactions={true}
-      >
-        <App />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <ApolloProvider client={theGraphClient}>
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider
+          coolMode
+          chains={chains}
+          theme={darkTheme({
+            accentColor: "#4CBB17",
+            accentColorForeground: "white",
+            borderRadius: "medium",
+            fontStack: "rounded",
+            overlayBlur: "small",
+          })}
+          showRecentTransactions={true}
+        >
+          <App />
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </ApolloProvider>
   </React.StrictMode>
 );

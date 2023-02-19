@@ -6,9 +6,9 @@ dataSources:
     name: SuperOffers
     network: goerli
     source:
-      address: "0xDe2E718C8A658Ac1c9ED28F2756642F683104C9e"
+      address: "0xde2e718c8a658ac1c9ed28f2756642f683104c9e"
       abi: SuperOffers
-      startBlock: 8517735
+      startBlock: 8516775
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
