@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 function goToOffer(offerId) {}
 export default function NotificationCard({
   offerId,
