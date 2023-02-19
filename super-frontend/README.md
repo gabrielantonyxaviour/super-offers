@@ -1,5 +1,12 @@
 # Super Offers
 
+Complete on-chain tasks and get a constant stream of income
+
+
+![cover_image](./markdown/cover.png)
+
+### Description
+
 Repudiation (Denial of an act) is one of the major issues in creating offers or agreements with anyone online. It requires trust that a person would provide the money/service on completing the deal. SuperOffers solves this problem. The entire logic is handled on-chain without any DAO or third-party involved which makes it completely trust-free and transparent.  
 
 The workflow involves two different types of users:
@@ -17,7 +24,7 @@ Possible use cases for Super Offers can be:
 4. Hold Token #1200 in CyperPunks NFT collection.
 The possibilities are endless..
 
-## Challenges
+### Challenges
 
 I struggled with developing the logic for my solidity smart contracts. I ran into a lot of issues when making low level calls to smart contracts and then when debugging and verifying the execution of the logic. 
 I have developed dApps with theGraph but this time I ran into a lot of issues in depolying my subgraph. 
