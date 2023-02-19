@@ -4,10 +4,18 @@ pragma solidity 0.8.14;
 import {ISuperfluid} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";
 import {SuperTokenV1Library} from "@superfluid-finance/ethereum-contracts/contracts/apps/SuperTokenV1Library.sol";
-
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol";
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+interface IPUSHCommInterface {
+    function sendNotification(
+        address _channel,
+        address _recipient,
+        bytes calldata _identity
+    ) external;
+}
 
 contract SuperOffers is AutomationCompatibleInterface {
     // Library Import
@@ -37,6 +45,8 @@ contract SuperOffers is AutomationCompatibleInterface {
     // Zero address
     address constant ZERO_ADDRESS = 0x0000000000000000000000000000000000000000;
 
+    address constant CHANNEL_ADDRESS = 0x0429A2Da7884CA14E53142988D5845952fE4DF6a;
+    address constant EPNS_COMM_CONTRACT_ADDRESS = 0xb3971BCef2D791bc4027BbfedFb47319A4AAaaAa;
     // mappings
     mapping(uint256 => SuperOffer) private _superOffers;
     uint256 private _offersPointer;
@@ -136,6 +146,33 @@ contract SuperOffers is AutomationCompatibleInterface {
             endTime,
             block.timestamp,
             description
+        );
+        string memory body = string(
+            abi.encodePacked(
+                _name,
+                "\n",
+                description,
+                "\n",
+                "Offer Id: ",
+                Strings.toString(_offersPointer - 1)
+            )
+        );
+        IPUSHCommInterface(EPNS_COMM_CONTRACT_ADDRESS).sendNotification(
+            CHANNEL_ADDRESS,
+            address(this),
+            bytes(
+                string(
+                    abi.encodePacked(
+                        "0",
+                        "+", // segregator
+                        "1",
+                        "+", // segregator
+                        "New Super Offer!",
+                        "+", // segregator
+                        body
+                    )
+                )
+            )
         );
     }
 
@@ -265,6 +302,31 @@ contract SuperOffers is AutomationCompatibleInterface {
             block.timestamp,
             msg.sender
         );
+        string memory body = string(
+            abi.encodePacked(
+                "User ",
+                msg.sender,
+                "  has claimed your offer\nOffer Id: ",
+                Strings.toString(_offersPointer - 1)
+            )
+        );
+        IPUSHCommInterface(EPNS_COMM_CONTRACT_ADDRESS).sendNotification(
+            CHANNEL_ADDRESS,
+            _superOffer.creator,
+            bytes(
+                string(
+                    abi.encodePacked(
+                        "0",
+                        "+", // segregator
+                        "3",
+                        "+", // segregator
+                        "You Offer is claimed!",
+                        "+", // segregator
+                        body
+                    )
+                )
+            )
+        );
     }
 
     function deleteFlows(uint256 _offerId) internal {
@@ -278,7 +340,45 @@ contract SuperOffers is AutomationCompatibleInterface {
             _superOffers[_offerId].flow = SuperFlow(0, 0, 0);
             _claimerToOffers[_receiver][_offerId] = false;
         }
+        string memory body;
+
+        if (_offerToClaimers[_offerId].length == 0) {
+            token.transfer(
+                _superOffers[_offerId].creator,
+                _superOffers[_offerId].flow.updatedAmount
+            );
+            body = string(
+                abi.encodePacked(
+                    "No one claimed your offer. Tokens are returned.\nOffer Id: ",
+                    Strings.toString(_offersPointer - 1)
+                )
+            );
+        } else {
+            body = string(
+                abi.encodePacked(
+                    "All of your tokens are streamed to the claimers\nOffer Id: ",
+                    Strings.toString(_offersPointer - 1)
+                )
+            );
+        }
         emit SuperOfferStopped(_offerId);
+        IPUSHCommInterface(EPNS_COMM_CONTRACT_ADDRESS).sendNotification(
+            CHANNEL_ADDRESS,
+            _superOffers[_offerId].creator,
+            bytes(
+                string(
+                    abi.encodePacked(
+                        "0",
+                        "+", // segregator
+                        "3",
+                        "+", // segregator
+                        "SuperOffer Ended!",
+                        "+", // segregator
+                        body
+                    )
+                )
+            )
+        );
     }
 
     function removeFlow(uint256 _offerId, address _receiver) internal {
@@ -367,8 +467,6 @@ contract SuperOffers is AutomationCompatibleInterface {
             (bool success, ) = address(this).call(func);
             require(success, "Deleting Offers failed");
         }
-
-        // Emit events
     }
 
     // function getClaim(uint _claimId)
